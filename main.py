@@ -1,8 +1,11 @@
 import warnings
+import toml
+import logging
+
 import pandas as pd
 import numpy as np
-import toml
 
+#logger = logging.getLogger(__name__)
 
 def main():
     data_import("data/sentences_with_sentiment.xlsx") #TODO: move to config
@@ -14,7 +17,7 @@ def data_import(input_path):
     :param input_path: path to dataset
     """
 
-    print(f'Importing dataset from: {input_path}')
+    print(f'Importing dataset from: {input_path}') #TODO: change to logging
     imported_sentences = pd.read_excel(input_path)
     print(f'Imported dataset dimensions: {imported_sentences.shape}')
 
@@ -29,3 +32,4 @@ def data_import(input_path):
 
 if __name__ == '__main__':
     main()
+
