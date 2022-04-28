@@ -135,21 +135,3 @@ print(f'Positive sentences with negative words: {result}')
 # a lot of negative words use in positive sentences, are used with negation, so in context those are not really
 # negative words any more (ie. for word 'concern': no safety concern)
 
-# Simple VADER Sentiment Analysis ----
-
-
-
-sentences_for_Vader = preproc_utils.add_label(unique_sentences_cleaned)
-correct = 0
-vader_predictions = []
-for _, row in sentences_for_Vader.iterrows():
-    prediction = Vader_result(row['Sentence'])
-    vader_predictions.append(prediction)
-    if prediction == str(row['Label']):
-        correct += 1
-
-import sklearn.metrics
-type(Vader_result(unique_sentences_cleaned.iloc[1]['Sentence']))
-print(sklearn.metrics.accuracy_score(vader_predictions, sentences_for_Vader['Label']))
-
-print(correct / len(raw_sentences))
