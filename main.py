@@ -11,8 +11,6 @@ import numpy as np
 from src import preproc_utils
 from src import ml_utils
 
-#logger = logging.getLogger(__name__)
-
 def main():
     """ main code"""
 
@@ -46,9 +44,8 @@ def data_analysis(sentences):
     ml_utils.vader_sentiment_analysis(sentences)
     # very low accuracy of 0.54, to be expacted in case of a rule-based method, domain-specific lang.
 
-
-
-
+    ml_utils.vader_sentiment_analysis(sentences)
+    # very low accuracy of 0.64
 
     return None
 
