@@ -2,7 +2,8 @@ import pytest
 
 import pandas as pd
 
-import preprocessing_utils
+from src import preproc_utils
+
 
 @pytest.fixture
 def input_dataframe():
@@ -15,8 +16,8 @@ def input_dataframe():
     return df
 
 def test_add_tokens_column(input_dataframe):
-    assert preprocessing_utils.add_tokens_column(input_dataframe)['Tokens'][2] == ["hello"]
-    assert preprocessing_utils.add_tokens_column(input_dataframe)['Tokens'][3] == ["bad", "news"]
+    assert preproc_utils.add_tokens_column(input_dataframe)['Tokens'][2] == ["hello"]
+    assert preproc_utils.add_tokens_column(input_dataframe)['Tokens'][3] == ["bad", "news"]
 
-def lowercase_in_sentence(input_dataframe):
-    assert preprocessing_utils.lowercase_in_sentence(input_dataframe)['Sentence'][4] == ["it's april."]
+def test_lowercase_in_sentence(input_dataframe):
+    assert preproc_utils.lowercase_in_sentence(input_dataframe)['Sentence'][4] == "it's april."
