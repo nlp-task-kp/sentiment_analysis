@@ -84,7 +84,7 @@ def get_negatives():
     via https://github.com/jeffreybreen/twitter-sentiment-analysis-tutorial-201107
 
     """
-    negative_file_path = "../data/negative-words.txt"
+    negative_file_path = "data/negative-words.txt"
     with open(negative_file_path) as source_file:
         negative_words = [i.replace("\n", "") for i in source_file if not (i.startswith(';') or i == "\n")]
 
@@ -208,3 +208,35 @@ def add_label(df):
     df.insert(2, "Label", labels, True)
 
     return df
+
+def draw_avg_token_len(positive_sentences, negative_sentences, neutral_sentences):
+    pos_mean_word_len = positive_sentences.Sentence.apply(mean_token_length)
+    neg_mean_word_len = negative_sentences.Sentence.apply(mean_token_length)
+    neutral_mean_word_len = neutral_sentences.Sentence.apply(mean_token_length)
+
+    sns.distplot(pos_mean_word_len, label='Positive')
+    sns.distplot(neg_mean_word_len, label='Negative')
+    sns.distplot(neutral_mean_word_len, label='Neutral')
+    plt.title('Average token length distribution')
+    plt.xlabel('Average token length')
+    plt.legend()
+    plt.show()
+    plt.savefig('figures/eda_plot_avg_tokens.png')
+
+    return None
+
+def draw_no_tokens(positive_sentences, negative_sentences, neutral_sentences):
+    positive_len = [len(nltk.word_tokenize(sentence)) for sentence in positive_sentences.Sentence.values]
+    negative_len = [len(nltk.word_tokenize(sentence)) for sentence in negative_sentences.Sentence.values]
+    neutral_len = [len(nltk.word_tokenize(sentence)) for sentence in neutral_sentences.Sentence.values]
+    sns.distplot(positive_len, label='Positive')
+    sns.distplot(negative_len, label='Negative')
+    sns.distplot(neutral_len, label='Neutral')
+    plt.legend()
+    plt.title('Number of tokens distribution')
+    plt.xlabel('Number of tokens')
+    plt.figure()
+    plt.show()
+    plt.savefig('figures/eda_plot_no_tokens.png')
+
+    return None

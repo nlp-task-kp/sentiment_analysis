@@ -1,6 +1,7 @@
 """ Exploratory Data Analysis """
 
 import nltk.sentiment
+import warnings
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -63,35 +64,13 @@ positive_sentences, negative_sentences, neutral_sentences = preproc_utils.split_
 
 # Checking number of tokens distribution ----
 
-positive_len = [len(nltk.word_tokenize(sentence)) for sentence in positive_sentences.Sentence.values]
-negative_len = [len(nltk.word_tokenize(sentence)) for sentence in negative_sentences.Sentence.values]
-neutral_len = [len(nltk.word_tokenize(sentence)) for sentence in neutral_sentences.Sentence.values]
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
-sns.distplot(positive_len, label='Positive')
-sns.distplot(negative_len, label='Negative')
-sns.distplot(neutral_len, label='Neutral')
-plt.legend()
-plt.title('Number of tokens distribution')
-plt.xlabel('Number of tokens')
-plt.figure(0)
-plt.show()
-#plt.savefig('figures/eda_plot_no_tokens.png')
+preproc_utils.draw_no_tokens(positive_sentences, negative_sentences, neutral_sentences)
 
 # Checking average token length distribution ----
 
-pos_mean_word_len = positive_sentences.Sentence.apply(preproc_utils.mean_token_length)
-neg_mean_word_len = negative_sentences.Sentence.apply(preproc_utils.mean_token_length)
-neutral_mean_word_len = neutral_sentences.Sentence.apply(preproc_utils.mean_token_length)
-
-sns.distplot(pos_mean_word_len, label='Positive')
-sns.distplot(neg_mean_word_len, label='Negative')
-sns.distplot(neutral_mean_word_len, label='Neutral')
-plt.title('Average token length distribution')
-plt.xlabel('Average token length')
-plt.legend()
-plt.figure(1)
-plt.show()
-plt.savefig('figures/eda_plot_avg_tokens.png')
+preproc_utils.draw_avg_token_len(positive_sentences, negative_sentences, neutral_sentences)
 
 # Taking into account small number of observations for, at least, Neutral and Negative labels
 # and shape of the plots, one can draw a conclustion that those distributions does not provide much value
@@ -121,6 +100,7 @@ most_common = nltk.FreqDist(neutr_tokens).most_common(20)
 print(f'Most common tokens (in neutral sentences): {most_common}')
 
 # there are no visible, significant differences between most common words in positive, negative and neutral sentences
+# tokens should be further cleaned
 
 # Check negative words in positive sentences ----
 
@@ -132,10 +112,14 @@ processed_sentences['Tokens_negative'] = processed_sentences['Tokens'].apply(
 result = processed_sentences[processed_sentences['Tokens_negative'].map(lambda d: len(d)) > 0]
 result = result[result['Positive'] == 1]
 result = result.sort_values(by=['Tokens_negative'])[['Sentence', 'Tokens', 'Tokens_negative']]
-print(f'Positive sentences with negative words: {result}')
+print(f'Positive sentences with negative words, first couple of records: ')
+print(result[['Sentence', 'Tokens_negative']][0:10])
+print(f'{result.shape}')
 
 # a lot of negative words use in positive sentences, are used with negation, so in context those are not really
 # negative words any more (ie. for word 'concern': no safety concern)
+
+# Check number of words in corpus, after cleaning----
 
 unique_sent_tokens = preproc_utils.add_tokens_column(unique_sentences_cleaned)
 all_tokens = [a for b in unique_sent_tokens.Tokens.tolist() for a in b]
@@ -152,3 +136,7 @@ df.sort_values(by="words", inplace=True)
 
 # Count of unique words 971
 # one can notice a lot of domain-specific terminology
+
+# Average count of words in a sentence, after tokenization ----
+
+print(unique_sent_tokens.Tokens.apply(lambda x: len(x)).mean())

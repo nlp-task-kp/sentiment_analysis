@@ -15,7 +15,7 @@ def main():
     """ main code"""
 
     warnings.simplefilter(action='ignore', category=FutureWarning)
-    # in production should be controller, here - for not cluttering the output
+    # in production should be controlled, here - for not cluttering the output
 
     downloaded_sentences = data_import("data/sentences_with_sentiment.xlsx") #TODO: could be moved to config
     sentences_cleaned = data_preprocessing(downloaded_sentences)
