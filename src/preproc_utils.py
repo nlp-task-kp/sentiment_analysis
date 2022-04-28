@@ -129,9 +129,9 @@ def cosine_similarity_check(df, threshold=0.9):
         for y in range(x, vectorized_corpus.shape[0]):
             if x != y:
                 if cosine_similarity(vectorized_corpus[x], vectorized_corpus[y]) > threshold:
-                    print(f"{corpus[x]} | ID: {x}")
-                    print(f"{corpus[y]} | ID: {y}")
-                    print("Cosine similarity:", cosine_similarity(vectorized_corpus[x], vectorized_corpus[y]))
+                    # print(f"{corpus[x]} | ID: {x}")
+                    # print(f"{corpus[y]} | ID: {y}")
+                    # print("Cosine similarity:", cosine_similarity(vectorized_corpus[x], vectorized_corpus[y]))
                     to_remove.append(y)
     return list(set(to_remove))
 

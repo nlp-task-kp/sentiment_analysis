@@ -37,7 +37,7 @@ def vader_sentiment_analysis(sentences):
     accuracy = sklearn.metrics.accuracy_score(vader_predictions, sentences_extended['Label'])
     confusion_matrix = sklearn.metrics.confusion_matrix(sentences_extended['Label'], vader_predictions)
     print(f"Accuracy for the VADER senitment analysis: {accuracy}")
-    print(f"Confusion matrix for the VADER senitment analysis: {confusion_matrix}")
+    print(f"Confusion matrix for the VADER senitment analysis: \n{confusion_matrix}")
     sentences_extended.drop("Label", 1, inplace=True)
     return None
 
@@ -62,7 +62,7 @@ def vader_sentiment_analysis(sentences):
         accuracy = sklearn.metrics.accuracy_score(sentences['Label'], predictions)
         confusion_matrix = sklearn.metrics.confusion_matrix(sentences['Label'], predictions)
         print(f"Accuracy for the pretrained BERT sentiment analysis: {accuracy}")
-        print(f"Confusion matrix for the pretrained BERT sentiment analysis: {confusion_matrix}")
+        print(f"Confusion matrix for the pretrained BERT sentiment analysis: \n{confusion_matrix}")
 
         sentences_extended.drop("Label", 1, inplace=True)
 
