@@ -135,3 +135,18 @@ print(f'Positive sentences with negative words: {result}')
 # a lot of negative words use in positive sentences, are used with negation, so in context those are not really
 # negative words any more (ie. for word 'concern': no safety concern)
 
+unique_sent_tokens = preproc_utils.add_tokens_column(unique_sentences_cleaned)
+all_tokens = [a for b in unique_sent_tokens.Tokens.tolist() for a in b]
+lemmatizer = nltk.stem.WordNetLemmatizer()
+lemmatized_words = [lemmatizer.lemmatize(x) for x in all_tokens]
+porter = nltk.stem.PorterStemmer()
+stemmed_words = [porter.stem(x) for x in lemmatized_words]
+print(f"Count of unique words {len(list(set(stemmed_words)))}")
+print("after removing stopwords, non alpha characters, lowering case, lemmatizing, stemming")
+
+df = pd.DataFrame(list(set(stemmed_words)))
+df.columns = ["words"]
+df.sort_values(by="words", inplace=True)
+
+# Count of unique words 971
+# one can notice a lot of domain-specific terminology
