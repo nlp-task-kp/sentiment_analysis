@@ -1,5 +1,6 @@
 import nltk
 import wordcloud
+import re
 
 import pandas as pd
 import numpy as np
@@ -42,9 +43,11 @@ def add_tokens_column(df):
 
     tokens = df.Sentence.map(nltk.word_tokenize).rename('Tokens')
     df_tokens = pd.concat([df, tokens], axis=1)
-    punctuation = [".", ",", "(", ")", "-", "%", ":"]
+    punctuation = ['.', ',', '(', ')', '-', '%', ':', '+', '-', '"', '\'']
     df_tokens['Tokens'] = df_tokens['Tokens'].apply(lambda x: [
         y.lower() for y in x if y.lower() not in stopwords_eng and y.lower() not in punctuation])
+
+    df_tokens['Tokens'] = df_tokens['Tokens'].apply(lambda x: [re.sub(r'[^A-Za-z ]+', '', y) for y in x])
 
     return df_tokens
 
