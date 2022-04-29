@@ -44,7 +44,7 @@ def data_analysis(sentences):
     ml_utils.vader_sentiment_analysis(sentences)
     # very low accuracy of 0.54, to be expacted in case of a rule-based method, domain-specific lang.
 
-    ml_utils.vader_sentiment_analysis(sentences)
+    ml_utils.run_pretrained_bert(sentences)
     # very low accuracy of 0.64
 
     return None
