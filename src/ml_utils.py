@@ -43,29 +43,29 @@ def vader_sentiment_analysis(sentences):
 
 # Simple VADER Sentiment Analysis ----
 
-    def transformer_result(sentence, classifier):
-        if classifier(sentence)[0].get("label") == 'POSITIVE' and classifier(sentence)[0].get("score") > 0.98:
-            result = 'Positive'
-        elif classifier(sentence)[0].get("label") == 'NEGATIVE' and classifier(sentence)[0].get("score") > 0.98:
-            result = 'Negative'
-        else:
-            result = 'Neutral'
-        return result
+def transformer_result(sentence, classifier):
+    if classifier(sentence)[0].get("label") == 'POSITIVE' and classifier(sentence)[0].get("score") > 0.98:
+        result = 'Positive'
+    elif classifier(sentence)[0].get("label") == 'NEGATIVE' and classifier(sentence)[0].get("score") > 0.98:
+        result = 'Negative'
+    else:
+        result = 'Neutral'
+    return result
 
-    def run_pretrained_bert(sentences):
-        classifier = transformers.pipeline("sentiment-analysis", model="siebert/sentiment-roberta-large-english")
-        predictions = sentences['Sentence'].apply(lambda x: transformer_result(x, classifier))
+def run_pretrained_bert(sentences):
+    classifier = transformers.pipeline("sentiment-analysis", model="siebert/sentiment-roberta-large-english")
+    predictions = sentences['Sentence'].apply(lambda x: transformer_result(x, classifier))
 
-        labels = sentences[['Positive', 'Negative', 'Neutral']].idxmax(1).to_list()
-        sentences.insert(2, "Label", labels)
+    labels = sentences[['Positive', 'Negative', 'Neutral']].idxmax(1).to_list()
+    sentences.insert(2, "Label", labels)
 
-        accuracy = sklearn.metrics.accuracy_score(sentences['Label'], predictions)
-        confusion_matrix = sklearn.metrics.confusion_matrix(sentences['Label'], predictions)
-        print(f"Accuracy for the pretrained BERT sentiment analysis: {accuracy}")
-        print(f"Confusion matrix for the pretrained BERT sentiment analysis: \n{confusion_matrix}")
+    accuracy = sklearn.metrics.accuracy_score(sentences['Label'], predictions)
+    confusion_matrix = sklearn.metrics.confusion_matrix(sentences['Label'], predictions)
+    print(f"Accuracy for the pretrained BERT sentiment analysis: {accuracy}")
+    print(f"Confusion matrix for the pretrained BERT sentiment analysis: \n{confusion_matrix}")
 
-        sentences_extended.drop("Label", 1, inplace=True)
+    sentences.drop("Label", 1, inplace=True)
 
-        return
+    return None
 
 
