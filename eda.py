@@ -140,3 +140,12 @@ df.sort_values(by="words", inplace=True)
 # Average count of words in a sentence, after tokenization ----
 
 print(unique_sent_tokens.Tokens.apply(lambda x: len(x)).mean())
+
+
+# Average count of words in a sentence, after tokenization ----
+labels = unique_sentences_cleaned[['Positive', 'Negative', 'Neutral']].idxmax(1).to_list()
+sns.countplot(x=labels)
+plt.xlabel('Label')
+plt.show()
+
+preproc_utils.count_labels(unique_sentences_cleaned)  # to compare
